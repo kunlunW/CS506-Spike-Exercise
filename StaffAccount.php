@@ -10,13 +10,17 @@ class StaffAccount
     {
         $this->username = $username;
         $this->password = $password;
+
         $conn = OpenCon();
-        $success = AddNewUser($conn, $username, $password, NULL, NULL, "staff");
+        $user = FindUser($conn, $this->username, $this->password);
+        if ($user->username == NULL) { //checks if user not already in system
+            $success = AddNewUser($conn, $username, $password, NULL, NULL, "staff");
+        } 
         CloseCon($conn);
 
         //***********************************
         // if ($success) {
-        //     echo "staff member successfully added.";
+        //     echo "staff member successfully added/found.";
         // } else {
         //     echo "staff member not added.";
         // }
