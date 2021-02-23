@@ -17,11 +17,11 @@ function CloseCon($conn)
 
 function CreateUsersTable($conn) 
 {
-    $sql = "CREATE TABLE Users (
+    $sql = "CREATE TABLE users (
     username VARCHAR(255) PRIMARY KEY,
     password VARCHAR(255) NOT NULL UNIQUE,
-    phonenumber CHAR(10) NOT NULL,
-    address VARCHAR(255) NOT NULL,
+    phonenumber CHAR(10),
+    address VARCHAR(255),
     type ENUM('customer', 'admin', 'staff') DEFAULT 'customer',
     cardnum CHAR(16),
     expdate CHAR(4),
@@ -29,10 +29,8 @@ function CreateUsersTable($conn)
     )";
 
     if ($conn->query($sql) === TRUE) {
-        //echo nl2br("Table Users created successfully\r\n");
         return true;
     } else {
-        //echo nl2br("Error creating table: " . $conn->error . "\r\n");
         return false;
     }
 }
