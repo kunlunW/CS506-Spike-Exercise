@@ -1,4 +1,6 @@
 <?php
+
+
 function OpenCon()
 {
     $dbhost = "localhost";
@@ -49,17 +51,15 @@ function DropUsersTable($conn)
 function AddNewUser($conn, $username, $password, $phonenumber, $address, $type="customer")
 {
     if ($type !== "customer" and $type !== "admin" and $type !== "staff") {
-        $type = "customer";
+        return false;
     }
 
     $sql = "INSERT INTO users (username, password, phonenumber, address, type) 
     VALUES ('$username', '$password', '$phonenumber', '$address', '$type')";
     
     if ($conn->query($sql) === TRUE) {
-        //echo nl2br("New user added successfully\r\n");
         return true;
     } else {
-        //echo nl2br("Error adding new user: " . $conn->error . "\r\n");
         return false;
     }
 }
@@ -72,26 +72,15 @@ function FindUser($conn, $username, $password)
 
     return $result = $conn->query($sql);
 }
-/*
-function FindUserById($conn, $id)
-{
-    $sql = "SELECT * 
-    FROM users 
-    WHERE id='$id'";
 
-    return $result = $conn->query($sql);
-}
- */
 function DeleteUser($conn, $username)
 {
     $sql = "DELETE FROM users
     WHERE username='$username'";
 
     if ($conn->query($sql) === true) {
-        //echo nl2br("User was successfully deleted\r\n");
         return true;
     } else {
-        //echo nl2br("User was not deleted\r\n");
         return false;
     }
 }
@@ -103,10 +92,8 @@ function UpdateUser($conn, $oldusername, $username, $password, $phonenumber, $ad
     WHERE username='$oldusername'";
 
     if ($conn->query($sql) === true) {
-        //echo nl2br("User was successfully updated\r\n");
         return true;
     } else {
-        //echo nl2br("User was not updated\r\n");
         return false;
     }
 }
@@ -149,7 +136,7 @@ function CreateMenuTable($conn)
     name VARCHAR(255) PRIMARY KEY,
     image VARCHAR(255) NOT NULL,
     price DOUBLE NOT NULL,
-    type available('yes', 'no') DEFAULT 'yes',
+    available ENUM('yes', 'no') DEFAULT 'yes'
     )";
 
     if ($conn->query($sql) === TRUE) {
@@ -172,31 +159,137 @@ function DropMenuTable($conn)
 
 function GetMenu($conn) 
 {
+    $sql = "SELECT * 
+    FROM menu";
 
+    return $result = $conn->query($sql);
 }
 
-function FindMenuItem($conn, $id)
+/*
+ * Deletes the menu item specified by $name. Note that this function will return true
+ * even if there is no item in the table by the name of $name. This function will only
+ * return false if the query fails to execute.
+ */
+function DeleteMenuItem($conn, $name)
 {
+    $sql = "DELETE FROM menu
+    WHERE name='$name'";
 
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function AddMenuItem($conn, $name, $image, $price, $avail)
 {
+    if ($avail !== "yes" and $avail !== "no") {
+        return false;
+    }
+
+    $sql = "INSERT INTO menu (name, image, price, available) 
+    VALUES ('$name', '$image', '$price', '$avail')";
+    
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
 
 }
 
-function UpdateMenuItem($conn, $id, $name, $image, $price, $avail)
+function UpdateMenuItem($conn, $oldname, $name, $image, $price, $avail)
+{
+    $sql = "UPDATE menu SET name='$name', image='$image', 
+    price='$price', available='$avail'
+    WHERE name='$oldname'";
+
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function GetMenuItem($conn, $name)
+{
+    $sql = "SELECT * 
+    FROM menu 
+    WHERE name='$name'";
+
+    return $result = $conn->query($sql);
+}
+
+function SetMenuItemAsOut($conn, $name)
+{
+    $sql = "UPDATE menu SET available='no'
+    WHERE name='$name'";
+
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function SetMenuItemAsIn($conn, $name)
+{
+    $sql = "UPDATE menu SET available='yes'
+    WHERE name='$name'";
+
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function CreateOrdersTable($conn)
+{
+    $sql = "CREATE TABLE orders (
+    id INT AUTO INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    menuname VARCHAR(255) NOT NULL,
+    price DOUBLE NOT NULL,
+    available ENUM('yes', 'no') DEFAULT 'yes'
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function DropOrdersTable($conn)
 {
 
 }
 
-function SetMenuItemAsOut($conn, $id)
+function AddOrder($conn, $username, $menuname, $quantity, $pickupdate, $vehdesc)
 {
 
 }
 
-function SetMenuItemAsIn($conn, $id)
+function DeleteOrder($conn, $id) 
+{
+
+}
+
+function GetAllIncompleteOrders($conn)
+{
+
+}
+
+function MarkOrderAsComplete($conn, $id)
+{
+
+}
+
+function GetOrdersWithDateRange($conn, $startdate, $enddate)
 {
 
 }
 ?>
+
