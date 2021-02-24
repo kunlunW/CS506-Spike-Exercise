@@ -13,57 +13,44 @@ class StaffAccount
 
         $conn = OpenCon();
         $user = FindUser($conn, $this->username, $this->password);
-        if ($user->username == NULL) { //checks if user not already in system
+        if ($user->username == NULL)
+        { //checks if user not already in system
             $success = AddNewUser($conn, $username, $password, NULL, NULL, "staff");
-        } 
+        }
         CloseCon($conn);
-
-        //***********************************
-        // if ($success) {
-        //     echo "staff member successfully added/found.";
-        // } else {
-        //     echo "staff member not added.";
-        // }
-        //***********************************
     }
 
-    function updateUsername($username)
+    function updateUsername($newUsername)
     {
-        $this->username = $username;
         $conn = OpenCon();
-        $success = UpdateUser($conn, $this->username, $this->password, NULL, NULL);
+        $success = UpdateUser($conn, $this->username, $newUsername, $this->password, NULL, NULL);
         CloseCon($conn);
 
-        //***********************************
-        // if ($success) {
-        //     echo "staff username successfully changed.";
-        // } else {
-        //     echo "staff username not changed.";
-        // }
-        //***********************************
+        if ($success)
+        {
+          $this->username = $newUsername;
+        }
     }
 
-    function updatePassword($password)
+    function updatePassword($newPassword)
     {
-        $this->password = $password;
         $conn = OpenCon();
-        $success = UpdateUser($conn, $this->username, $this->password, NULL, NULL);
+        $success = UpdateUser($conn, $this->username, $this->username, $newPassword, NULL, NULL);
         CloseCon($conn);
 
-        //***********************************
-        // if ($success) {
-        //     echo "staff password successfully changed.";
-        // } else {
-        //     echo "staff password not changed.";
-        // }
-        //***********************************
+        if ($success)
+        {
+            $this->password = $newPassword;
+        }
     }
 
-    function getUsername() {
+    function getUsername()
+    {
         return $this->username;
     }
 
-    function getPassword() {
+    function getPassword()
+    {
         return $this->password;
     }
 
