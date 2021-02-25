@@ -196,7 +196,6 @@ function AddMenuItem($conn, $name, $image, $price, $avail)
     } else {
         return false;
     }
-
 }
 
 function UpdateMenuItem($conn, $oldname, $name, $image, $price, $avail)
@@ -246,13 +245,17 @@ function SetMenuItemAsIn($conn, $name)
 }
 
 function CreateOrdersTable($conn)
-{
+{ // TODO set up order date and pick up date
     $sql = "CREATE TABLE orders (
-    id INT AUTO INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     menuname VARCHAR(255) NOT NULL,
-    price DOUBLE NOT NULL,
-    available ENUM('yes', 'no') DEFAULT 'yes'
+    quantity INT NOT NULL,
+    priority ENUM('1', '2', '3', '4', '5'),
+    complete ENUM('yes', 'no') DEFAULT 'no',
+    orderdate DATETIME,
+    pickupdate DATETIME,
+    vehicledescription VARCHAR(255)
     )";
 
     if ($conn->query($sql) === TRUE) {
@@ -264,32 +267,119 @@ function CreateOrdersTable($conn)
 
 function DropOrdersTable($conn)
 {
+    $sql = "DROP TABLE orders";
 
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return true;
+    }
 }
 
-function AddOrder($conn, $username, $menuname, $quantity, $pickupdate, $vehdesc)
+function GetNextId($conn)
 {
+    $sql = "SELECT *
+    FROM orders
+    ORDER BY id DESC
+    LIMIT 1";
 
+    $result = $conn->query($sql);
+
+    if ($result->num_rows === 0)
+        return 1;
+    else 
+        return ($result->fetch_assoc()["id"] + 1);
+}
+
+function AddOrder($conn, $id, $username, $menuname, $quantity, $pickupdate, $vehdesc, $priority='5')
+{
+    $sql = "SELECT CURRENT_TIMESTAMP() AS Date";
+
+    $orderdate = $conn->query($sql)->fetch_assoc()["Date"];
+    
+    $sql = "INSERT INTO orders (id, username, menuname, quantity, priority, orderdate, pickupdate, vehicledescription) 
+    VALUES ('$id', '$username', '$menuname', '$quantity', '$priority', '$orderdate', '$pickupdate', '$vehdesc')";
+    
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function DeleteOrder($conn, $id) 
 {
+    $sql = "DELETE FROM orders
+    WHERE id='$id'";
 
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    } 
+}
+
+function GetOrder($conn, $id)
+{
+    $sql = "SELECT * 
+    FROM orders
+    WHERE id='$id'";
+
+    return $result = $conn->query($sql); 
 }
 
 function GetAllIncompleteOrders($conn)
 {
+    $sql = "SELECT * 
+    FROM orders
+    WHERE complete='no'
+    ORDER BY priority ASC, id DESC";
 
+    return $result = $conn->query($sql);
 }
 
 function MarkOrderAsComplete($conn, $id)
 {
+    $sql = "UPDATE orders SET complete='yes'
+    WHERE id='$id'";
 
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function MarkOrderAsIncomplete($conn, $id)
+{
+    $sql = "UPDATE orders SET complete='no'
+    WHERE id='$id'";
+
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function GetOrdersWithDateRange($conn, $startdate, $enddate)
 {
+    $sql = "SELECT * 
+    FROM orders
+    WHERE '$startdate'<=orderdate AND orderdate<'enddate'";
 
+    return $result = $conn->query($sql);
+}
+
+function ChangeOrderPriority($conn, $id, $priority)
+{
+    $sql = "UPDATE orders SET priority='$priority'
+    WHERE id='$id'";
+
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
 }
 ?>
-
