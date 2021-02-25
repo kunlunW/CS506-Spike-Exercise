@@ -23,8 +23,8 @@ export default class Contact extends Component {
         <Grid>
           
               <div className="contact">
-                <h1 style={{fontWeight:"bold"}}>Contact Us</h1><br/>
-                <h3>BadgerByte</h3><br/>
+                <br/>
+              <br/>
                 <h4>UW-Madison
                     <br/><br/>
                     Tel: (123) 456-7890<br/><br/>
