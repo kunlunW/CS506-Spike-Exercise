@@ -19,7 +19,7 @@ function CloseCon($conn)
 
 function CreateUsersTable($conn) 
 {
-    $sql = "CREATE TABLE users (
+    $sql = "CREATE TABLE Users (
     username VARCHAR(255) PRIMARY KEY,
     password VARCHAR(255) NOT NULL UNIQUE,
     phonenumber CHAR(10),
@@ -34,6 +34,32 @@ function CreateUsersTable($conn)
         return true;
     } else {
         return false;
+    }
+}
+
+function CreateOrderTable($conn) 
+{
+    $sql = "CREATE TABLE Order (
+    username VARCHAR(255) PRIMARY KEY,
+    menuitem VARCHAR(255),
+    type ENUM('customer', 'admin', 'staff') DEFAULT 'customer',
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function DropOrderTable($conn) 
+{
+    $sql = "DROP TABLE Order";
+
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return true;
     }
 }
 
@@ -89,6 +115,19 @@ function UpdateUser($conn, $oldusername, $username, $password, $phonenumber, $ad
 {
     $sql = "UPDATE users SET username='$username', password='$password', 
     phonenumber='$phonenumber', address='$address'
+    WHERE username='$oldusername'";
+
+    if ($conn->query($sql) === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function UpdateOrder($conn, $oldusername, $username, $menuitem)
+{
+    $sql = "UPDATE Order SET username='$username', menuitem='$menuitem'
     WHERE username='$oldusername'";
 
     if ($conn->query($sql) === true) {
