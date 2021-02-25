@@ -160,7 +160,8 @@ function DropMenuTable($conn)
 function GetMenu($conn) 
 {
     $sql = "SELECT * 
-    FROM menu";
+    FROM menu
+    WHERE available='yes'";
 
     return $result = $conn->query($sql);
 }
@@ -247,7 +248,7 @@ function SetMenuItemAsIn($conn, $name)
 function CreateOrdersTable($conn)
 { // TODO set up order date and pick up date
     $sql = "CREATE TABLE orders (
-    id INT PRIMARY KEY,
+    id INT,
     username VARCHAR(255) NOT NULL,
     menuname VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
