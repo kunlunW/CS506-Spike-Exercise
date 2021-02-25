@@ -6,6 +6,7 @@ import LogIn from './components/LogIn';
 import Shop from './components/Shop';
 import SignUp from './components/SignUp';
 import product from './components/product.json';
+import Contact from './components/Contact';
 
 import './App.css';
 import '../node_modules/react-image-slider/lib/image-slider.css';
@@ -69,10 +70,11 @@ class App extends Component {
           <BrowserRouter>
             <div id='routes'>
               <Route exact path='/' component={Home} />
-             
+             <Route exact path='/contact' component={Contact} />
               <Route exact path='/shop'  render={()=><Shop addToCart={this.addToCart}/>}  />
               <Route exact path='/login' render={()=><LogIn />}/>
               <Route exact path='/signup' render={()=><SignUp />} />
+              
             
             </div>
           </BrowserRouter>
