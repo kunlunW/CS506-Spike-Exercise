@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios";
+
 import {
   FormGroup,
   FormControl,
@@ -26,6 +28,19 @@ export default class Signup extends Component {
     });
   }
 
+  //Cam added this
+  buttonClick = () => {
+
+    //check if passwords match here before proceeding?
+	var check = this.state.password === this.state.confirmPassword;
+	if (check) {
+		 var r = "/signup?name="+this.state.username+"&password="+this.state.password;
+          axios.get(r).then(response => {
+              console.log(response.data)
+         });
+	}
+	//need a way to notify user if password and confirmPassword are not equal
+  }
 
   renderForm() {
     return (
@@ -57,11 +72,11 @@ export default class Signup extends Component {
           />
         </FormGroup>
 
-        <h5>Already an user? <a href="/login" > Log in</a></h5>
+        <h5>Already a user? <a href="/login" > Log in</a></h5>
 
         <br/><br/>
-        
-        <Button block size="lg" >
+
+        <Button block size="lg" onClick = {this.buttonClick} >
             Register
           </Button>
 
@@ -70,15 +85,14 @@ export default class Signup extends Component {
   }
 
   render() {
-  
+
       return (
         <div className="signuppage">
           <h1>Sign Up </h1>
           <br/>
           {this.renderForm()}
         </div>
-        
+
       );
     }
   }
-

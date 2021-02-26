@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios" //Cam added this
+
 import { Button,
          FormGroup,
          FormControl,
@@ -25,14 +27,22 @@ export default class LogIn extends Component {
     });
   };
 
+  //Cam added this
+  buttonClick = () => {
+	var r = "/login?name="+this.state.username+"&password="+this.state.password;
+    axios.get(r).then(response => {
+       console.log(response.data)
+    });
+  };
+
   render() {
- 
+
     return (
       <div className="loginpage">
         <h1>Log In</h1>
-        <br/> 
+        <br/>
           <FormGroup  size="lg">
-           
+
             <FormControl
               autoFocus
               placeholder="Enter username"
@@ -53,10 +63,7 @@ export default class LogIn extends Component {
 
           <h5>Don't have an account? <a href="/signup" > Register Now</a></h5>
 
-          <Button
-            block
-            size="lg"
-          >
+          <Button blocksize="lg" onClick = {this.buttonClick} >
             Login
           </Button>
       </div>
