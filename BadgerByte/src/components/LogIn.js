@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios" //Cam added this
+import axios from "axios" 
 
 import { Button,
          FormGroup,
@@ -27,7 +27,6 @@ export default class LogIn extends Component {
     });
   };
 
-  //Cam added this
   buttonClick = () => {
 	var r = "/login?name="+this.state.username+"&password="+this.state.password;
     axios.get(r).then(response => {

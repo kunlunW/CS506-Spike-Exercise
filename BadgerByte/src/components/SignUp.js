@@ -15,7 +15,7 @@ export default class Signup extends Component {
 
     this.state = {
       isLoading: false,
-      username: "",
+      username: "newUser",
       password: "",
       confirmPassword: "",
     }
@@ -28,10 +28,8 @@ export default class Signup extends Component {
     });
   }
 
-  //Cam added this
   buttonClick = () => {
 
-    //check if passwords match here before proceeding?
 	var check = this.state.password === this.state.confirmPassword;
 	if (check) {
 		 var r = "/signup?name="+this.state.username+"&password="+this.state.password;
