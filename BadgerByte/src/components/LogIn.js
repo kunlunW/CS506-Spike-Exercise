@@ -21,13 +21,6 @@ export default class LogIn extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
   
-  handleTestButtonClick = () => {
-    axios.get("/loginYS").then(response => {
-      this.setState({
-        test1: response.data.testValue
-      });
-    });
-  };
 
   handleLoginButtonClick = () => {
     var r = "/login?username="+this.state.username+"&password="+this.state.password;
@@ -35,8 +28,9 @@ export default class LogIn extends Component {
       this.setState({
         wrongPass: response.data.isCorrect
       });
-	  console.log(response.data.isCorrect);
-
+	  if (!this.wrongPass) {
+		window.location.href = "/shop";
+	  }
     });
   };
 
@@ -80,9 +74,6 @@ export default class LogIn extends Component {
             onClick = {this.handleLoginButtonClick}>Login
           </Button>
       
-          <Button
-            onClick = {this.handleTestButtonClick}>testButton
-          </Button>
           <h7>
             The test value is: {this.state.test1}
           </h7>
