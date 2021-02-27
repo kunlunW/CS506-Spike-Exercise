@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-
 import {
   FormGroup,
   FormControl,
@@ -18,46 +17,49 @@ export default class Signup extends Component {
       username: "",
       password: "",
       confirmPassword: "",
+      phonenumber: "",
+      address: "",
+      type: "customer",
+	  isRegistered: false 
     }
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
+     this.setState({
+       [event.target.id]: event.target.value
+     });
+   };
+
+  handleRegisterButtonClick = () => {
+    var r = "/signup?username="+this.state.username+"&password="+this.state.password+"&phonenumber="+this.state.phonenumber+"&address="+this.state.address+"&type="+this.state.type;
+    axios.get(r).then(response => {
+      this.setState({
+      	isRegistered: response.data.isCorrect
+      });
+	  console.log(this.isRegistered);
+	  if (this.isRegistered) {
+		window.location.href = "/shop";
+	  }
     });
-  }
-
-  //Cam added this
-  buttonClick = () => {
-
-    //check if passwords match here before proceeding?
-	var check = this.state.password === this.state.confirmPassword;
-	if (check) {
-		 var r = "/signup?name="+this.state.username+"&password="+this.state.password;
-          axios.get(r).then(response => {
-              console.log(response.data)
-         });
-	}
-	//need a way to notify user if password and confirmPassword are not equal
   }
 
   renderForm() {
     return (
       <form >
-        <FormGroup size = "lg">
-          <FormControl
-            autoFocus
-            value={this.state.username}
-            onChange={this.handleChange.bind(this)}
-            placeholder="Enter username"
-          />
+        <FormGroup controlId ="username" size = "lg">
+			<FormControl 
+              value={this.state.username}
+              onChange={this.handleChange}
+			  placeholder="Enter Username"
+              type="username"
+            />
         </FormGroup>
 
         <FormGroup controlId="password" size = "lg">
           <FormControl
             value={this.state.password}
-            onChange={this.handleChange.bind(this)}
+            onChange={this.handleChange}
             type="password"
             placeholder="Enter Password"
           />
@@ -66,17 +68,35 @@ export default class Signup extends Component {
         <FormGroup controlId="confirmPassword" size = "lg">
           <FormControl
             value={this.state.confirmPassword}
-            onChange={this.handleChange.bind(this)}
+            onChange={this.handleChange}
             type="password"
-            placeholder="Enter Password"
+            placeholder="Confirm Password"
           />
         </FormGroup>
 
-        <h5>Already a user? <a href="/login" > Log in</a></h5>
+        <FormGroup controlId="phonenumber" size="lg">
+            <FormControl
+              placeholder="Enter Phone Number"
+              value={this.state.phonenumber}
+              onChange={this.handleChange}
+              type="phonenumber"
+            />
+          </FormGroup>
+
+          <FormGroup controlId="address" size="lg">
+            <FormControl
+              placeholder="Enter Address"
+              value={this.state.address}
+              onChange={this.handleChange}
+              type="address"
+            />
+          </FormGroup>
+
+        <h5>Already an user? <a href="/login" > Log in</a></h5>
 
         <br/><br/>
-
-        <Button block size="lg" onClick = {this.buttonClick} >
+        
+        <Button block size="lg" onClick = {this.handleRegisterButtonClick}>
             Register
           </Button>
 
@@ -85,14 +105,16 @@ export default class Signup extends Component {
   }
 
   render() {
-
+  
       return (
         <div className="signuppage">
           <h1>Sign Up </h1>
           <br/>
           {this.renderForm()}
         </div>
-
+        
       );
     }
   }
+
+
