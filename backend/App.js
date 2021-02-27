@@ -39,13 +39,12 @@ app.get("/login", (req, res) => {
   });
 
 app.get("/signup", (req, res) => {
-    var username = req.query.name;
+    var username = req.query.username;
     var password = req.query.password;
     var phonenumber = req.query.phonenumber;
     var address = req.query.address;
     var type = req.query.type;
    	
-	connection.connect(); 
 	//intert new user into database
     //send True or "yes" or something if successful
 	//send False or "no or something if not successful
@@ -55,7 +54,6 @@ app.get("/signup", (req, res) => {
          if (error) throw error
              console.log("success.")
    })
-   connection.end();
 });
 
 app.listen(port, () => {

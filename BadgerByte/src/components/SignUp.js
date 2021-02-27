@@ -42,12 +42,11 @@ export default class Signup extends Component {
   renderForm() {
     return (
       <form >
-        <FormGroup controlId = "username" size = "lg">
-			<FormControl
-              autoFocus
-              placeholder="Enter Username"
+        <FormGroup controlId ="username" size = "lg">
+			<FormControl 
               value={this.state.username}
               onChange={this.handleChange}
+			  placeholder="Enter Username"
               type="username"
             />
         </FormGroup>
@@ -55,7 +54,7 @@ export default class Signup extends Component {
         <FormGroup controlId="password" size = "lg">
           <FormControl
             value={this.state.password}
-            onChange={this.handleChange.bind(this)}
+            onChange={this.handleChange}
             type="password"
             placeholder="Enter Password"
           />
@@ -64,7 +63,7 @@ export default class Signup extends Component {
         <FormGroup controlId="confirmPassword" size = "lg">
           <FormControl
             value={this.state.confirmPassword}
-            onChange={this.handleChange.bind(this)}
+            onChange={this.handleChange}
             type="password"
             placeholder="Confirm Password"
           />
