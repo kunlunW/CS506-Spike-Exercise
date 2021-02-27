@@ -25,7 +25,7 @@ app.get("/login", (req, res) => {
 	var isCorrect = false;
 	var sql = "SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"';";
     connection.query(sql, function (error, results) {
-      if (error) { isCorrect=false; }
+      if (error) { throw error; }
       else {
         console.log("success.");
         console.log(results[0]);
