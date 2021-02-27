@@ -19,7 +19,8 @@ export default class Signup extends Component {
       confirmPassword: "",
       phonenumber: "",
       address: "",
-      type: "customer"
+      type: "customer",
+	  isRegistered: false 
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -34,8 +35,12 @@ export default class Signup extends Component {
     var r = "/signup?username="+this.state.username+"&password="+this.state.password+"&phonenumber="+this.state.phonenumber+"&address="+this.state.address+"&type="+this.state.type;
     axios.get(r).then(response => {
       this.setState({
-        wrongPass: response.data.isCorrect
+      	isRegistered: response.data.isCorrect
       });
+	  console.log(this.isRegistered);
+	  if (this.isRegistered) {
+		window.location.href = "/shop";
+	  }
     });
   }
 
