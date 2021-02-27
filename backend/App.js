@@ -19,16 +19,12 @@ app.get("/login", (req, res) => {
     var username = req.query.username;
     var password = req.query.password;
 
-    //check if username and password exist in database
-    //send True or "yes" or something if it exists
-    //send False or "no" if is not in database
 	var isCorrect = false;
 	var sql = "SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"';";
     connection.query(sql, function (error, results) {
       if (error) { throw error; }
       else {
         console.log("success.");
-        console.log(results[0]);
         var isCorrect = false;
         if (results[0] == 1) {
           isCorrect = true;
@@ -44,16 +40,23 @@ app.get("/signup", (req, res) => {
     var phonenumber = req.query.phonenumber;
     var address = req.query.address;
     var type = req.query.type;
-   	
-	//intert new user into database
-    //send True or "yes" or something if successful
-	//send False or "no or something if not successful
-	var query_p2 = "'"+username+"', '"+password+"', '"+phonenumber+"', '"+address+"', '"+ type+"'";
-    var sql = "INSERT INTO users (username, password, phonenumber, address, type) VALUES(" +query_p2+");";
+
+    //Check if someone has already registered the username
+    var sql = "SELECT COUNT(*) AS num FROM users WHERE username='" + username + "';";
     connection.query(sql, function (error, results) {
-         if (error) throw error
-             console.log("success.")
-   })
+        if (results[0].num !== 0) { 
+            console.log("username already registered");
+            res.send(false);
+        } else {
+			var query_p2 = "'"+username+"', '"+password+"', '"+phonenumber+"', '"+address+"', '"+ type+"'";
+      		var sql = "INSERT INTO users (username, password, phonenumber, address, type) VALUES(" +query_p2+");";
+          	connection.query(sql, function (error, results) {
+              	if (error){ throw error }
+              	console.log("success.")
+				res.send(true);
+          	});
+     	}
+	}); 
 });
 
 app.listen(port, () => {
