@@ -44,7 +44,7 @@ export default class NavBar extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/contact">Contact</NavLink>
+                <NavLink href="/contact">Check Delivery</NavLink>
               </NavItem>
 
               <NavItem>

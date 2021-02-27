@@ -1,12 +1,24 @@
 import React, { Component } from "react";
 import { Grid,
          Col,
+         Row,
          Form,
          FormGroup,
          ControlLabel,
          FormControl,
-         Button } from 'react-bootstrap';
+         Button, 
+         Container} from 'react-bootstrap';
 import "../App.css";
+import Map from "./Map";
+import {
+    Card, CardImg, CardTitle, CardText, CardDeck,
+    CardSubtitle, CardBody
+  } from 'reactstrap';
+
+import img2 from '../picture/deliveryCart.jpeg';
+import img3 from '../picture/driver.png';
+import img4 from '../picture/time.png';
+
 
 export default class Contact extends Component {
   constructor(props) {
@@ -19,21 +31,60 @@ export default class Contact extends Component {
 
   render() {
     return (
-      <div style={{width:'80%', margin:'auto'}}>
+      <div style={{width:'100%', margin:'auto'}}>
         <Grid>
           
-              <div className="contact">
-                <br/>
-              <br/>
-                <h4>UW-Madison
-                    <br/><br/>
-                    Tel: (123) 456-7890<br/><br/>
-                    Email: badgerbyte@gmail.com<br/>
-                </h4>
-              </div>
-            
-          <br></br>
-          <br></br>
+              {/* <div className="contact"> */}
+                <h2>You Delivery</h2>
+              {/* </div> */}
+
+              <Row className="justify-content-md-center">
+              <Col xs={12} sm={6} md={6} lg={6}>
+                       <Map />
+
+                   </Col> 
+            </Row>
+              
+
+
+        <br/><br/>
+        
+        <content className='content'> 
+                <CardDeck>
+              <Card>
+              <CardImg top width="100%" src={img2} alt="Card image cap" />
+                    <CardBody>
+                    <CardTitle tag="h5">Honda Civic</CardTitle>
+                    <CardSubtitle tag="h6"  className="mb-2 text-muted">License: BADGER12</CardSubtitle>
+                    <CardText><br/><br/></CardText>
+                    <Button href="">Check Update</Button>
+                    </CardBody>
+              </Card>
+
+              <Card>
+              <CardImg top width="100%" src={img3} alt="Card image cap" />
+                    <CardBody>
+                    <CardTitle tag="h5">John Smith</CardTitle>
+                    <CardSubtitle tag="h6"  className="mb-2 text-muted">Tel:(123)456-7890</CardSubtitle>
+                    <CardText><br/><br/></CardText>
+                    <Button href="">View Credential</Button>
+                    </CardBody>
+              </Card>
+              
+              <Card>
+              <CardImg top width="100%" src={img4} alt="Card image cap" />
+                    <CardBody>
+                    <CardTitle tag="h5">Estimated Delivery Time</CardTitle>
+                    <CardSubtitle tag="h6"  className="mb-2 text-muted"><br/></CardSubtitle>
+                    <CardText>15:00-15:30<br/></CardText>
+                    <Button href="">Check Update!</Button>
+                    </CardBody>
+              </Card>
+              
+          </CardDeck>                
+          
+          </content>
+
 
           <h3>Tell us your thoughts</h3>
 
