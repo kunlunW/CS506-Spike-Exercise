@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios" 
-
+import axios from "axios";
 import { Button,
          FormGroup,
          FormControl,
@@ -15,11 +14,31 @@ export default class LogIn extends Component {
       username: "",
       password: "",
       redirectTo: null,
-      wrongPass: false
+      wrongPass: false,
+      test1: "Not yet gotten"
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
+  
+  handleTestButtonClick = () => {
+    axios.get("/loginYS").then(response => {
+      this.setState({
+        test1: response.data.testValue
+      });
+    });
+  };
+
+  handleLoginButtonClick = () => {
+    var r = "/login?username="+this.state.username+"&password="+this.state.password;
+    axios.get(r).then(response => {
+      this.setState({
+        wrongPass: response.data.isCorrect
+      });
+	  console.log(response.data.isCorrect);
+
+    });
+  };
 
   handleChange = event => {
     this.setState({
@@ -27,26 +46,20 @@ export default class LogIn extends Component {
     });
   };
 
-  buttonClick = () => {
-	var r = "/login?name="+this.state.username+"&password="+this.state.password;
-    axios.get(r).then(response => {
-       console.log(response.data)
-    });
-  };
-
   render() {
-
+ 
     return (
       <div className="loginpage">
         <h1>Log In</h1>
-        <br/>
-          <FormGroup  size="lg">
-
+        <br/> 
+          <FormGroup controlId="username" size="lg">
+           
             <FormControl
               autoFocus
-              placeholder="Enter username"
+              placeholder="Enter Username"
               value={this.state.username}
               onChange={this.handleChange}
+              type="username"
             />
           </FormGroup>
 
@@ -57,15 +70,25 @@ export default class LogIn extends Component {
               onChange={this.handleChange}
               type="password"
             />
-            {this.state.wrongPass? "Invalid Password. Please Try Again." : ""}
           </FormGroup>
 
           <h5>Don't have an account? <a href="/signup" > Register Now</a></h5>
 
-          <Button blocksize="lg" onClick = {this.buttonClick} >
-            Login
+          <Button
+            block
+            size="lg"
+            onClick = {this.handleLoginButtonClick}>Login
           </Button>
+      
+          <Button
+            onClick = {this.handleTestButtonClick}>testButton
+          </Button>
+          <h7>
+            The test value is: {this.state.test1}
+          </h7>
+      
       </div>
     );
   }
 }
+
